@@ -50,7 +50,7 @@ def de_safe_xml(kinda_xml):
 def main():
 	query=options.query
 	ofile=options.outfile
-	esearch = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&mindate=2001&maxdate=2010&retmode=xml&retmax=10000000&term=%s' % (query)
+	esearch = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&retmode=xml&retmax=10000000&term=%s' % (query)
 	handle = urllib.urlopen(esearch)
 	data = handle.read()
 	root = ET.fromstring(data)
@@ -72,7 +72,7 @@ def main():
 			if(len(abstract)>0):
 				count=count+1
 				for abst_part in abstract:
-					abstract_text+=" "+abst_part.text
+					abstract_text+=' '+str(abst_part.text)
 			else:
 			  print 'skipping PMID %s as length of abstract is zero' % pmid
 			title.encode('utf-8', 'replace')
