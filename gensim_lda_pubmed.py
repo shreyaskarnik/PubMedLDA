@@ -16,13 +16,14 @@ from gensim.parsing import stem_text
 """
 Some options using the option parser 
 """
-usage = "usage: python %prog -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract] -v [verbose output FALSE by default]"
+usage = "usage: python %prog -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights]"
 parser = OptionParser(usage=usage)
 parser.add_option("-i", "--inputfile",action="store", dest="inputfile",help="Enter the file containing PubMed abstracts", metavar="IFILE")
 parser.add_option("-m", "--model",action="store",dest="model",help="Enter the name of file where you want to store output model", metavar="MFILE")
 parser.add_option("-d", "--dictionary",action="store",dest="dicto",help="Enter the name of file where you want to store dictionary", metavar="DFILE")
 parser.add_option("-c", "--corpusname",action="store",dest="corpname",help="Enter the name of file where you want to store corpus", metavar="CFILE")
 parser.add_option("-k", "--numtopics",action="store",dest="ntopics",type="int",help="Number of topics", metavar="NTOP")
+parser.add_option("-t", "--tfidf",action="store",dest="tfidf",help="TFIDF weignting (default TRUE)", metavar="TFIDF",default="TRUE")
 parser.add_option("-v",action="store",help="Verbose Output True/False", dest="verbose",default="FALSE")
 #parser.add_option("-q", action="store_false",help="No stemming", dest="stem")
 (options, args) = parser.parse_args()
@@ -83,22 +84,24 @@ def main():
   using tfidf weights
   """
   corpus = [dictionary.doc2bow(text) for text in texts]
-  corpora.MmCorpus.serialize(corpname, corpus)
-  tfidf = models.TfidfModel(corpus)
-  corpus_tfidf = tfidf[corpus]
-  
+  if(options.tfidf=="TRUE"):
+    tfidf = models.TfidfModel(corpus)
+    corpus = tfidf[corpus]
+    corpora.MmCorpus.serialize(corpname, corpus)
+  else:
+    corpora.MmCorpus.serialize(corpname, corpus) 
   """
   Running LDA
   """
-  lda =models.LdaModel(corpus=corpus_tfidf, id2word=dictionary, num_topics=ntopics, update_every=5, passes=50)
-  lda.print_topics(topics=ntopics,topn=10)
+  lda =models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=ntopics,passes=50)
+  lda.print_topics(topics=ntopics,topn=12)
   lda.save(model)
   if(options.verbose=="FALSE"):
     print "Processing finished please check %s for details" %(log_file_name) 
-  #doc_lda = lda[corpus_tfidf]
+  doc_lda = lda[corpus]
   #print(doc_lda)
   #for doc in doc_lda:
-  #  print(doc)
+   # print(doc)
   
 if __name__ == "__main__":
   main()
