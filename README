@@ -1,0 +1,39 @@
+This is code for performing topic modeling on PubMed abstracts. 
+Depends on package gensim and nltk.
+The package contains two parts:
+1. Retrieve PubMed abstracts using the script getpmAbstracts.py
+Usage: usage:python getpmAbstracts.py -q [query] -o [output] -s [flag for steming]
+
+Options:
+  -h, --help            show this help message and exit
+  -q QUERY, --query=QUERY
+                        Enter the PubMed query (PubMed style queries
+                        supported)
+  -o OFILE, --output=OFILE
+                        Enter the output file name to store result
+  -s, --stem            To stem result
+2. Once you have the PubMed abstracts in a file run LDA over them:
+
+Usage: python gensim_lda_pubmed.py -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract]
+Options:
+  -h, --help            show this help message and exit
+  -i IFILE, --inputfile=IFILE
+                        Enter the file containing PubMed abstracts
+  -m MFILE, --model=MFILE
+                        Enter the name of file where you want to store output
+                        model
+  -d DFILE, --dictionary=DFILE
+                        Enter the name of file where you want to store
+                        dictionary
+  -c CFILE, --corpusname=CFILE
+                        Enter the name of file where you want to store corpus
+  -k NTOP, --numtopics=NTOP
+                        Number of topics
+
+
+All the code in this project is under Creative Commons License. 
+
+Code written by Shreyas Karnik
+
+contact: mmagusss@gmail.com for any suggestions/queries.
+
