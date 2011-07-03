@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+getpmAbstracts.py
+
+Created by Shreyas Karnik on 2011-07-02.
+Copyright (c) 2011 Shreyas Karnik.
+"""
+
+
+
+
+
 import urllib
 import urllib2
 import sys

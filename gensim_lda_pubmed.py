@@ -1,4 +1,14 @@
 #!usr/bin/python
+"""
+gensim_lda_pubmed.py
+
+Created by Shreyas Karnik on 2011-07-02.
+Copyright (c) 2011 Shreyas Karnik.
+"""
+
+
+
+
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 from gensim import corpora, models, similarities
