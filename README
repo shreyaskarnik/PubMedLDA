@@ -14,7 +14,8 @@ Options:
   -s, --stem            To stem result
 2. Once you have the PubMed abstracts in a file run LDA over them:
 
-Usage: python gensim_lda_pubmed.py -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract]
+Usage: python gensim_lda_pubmed.py -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract] -v [verbose output FALSE by default]
+
 Options:
   -h, --help            show this help message and exit
   -i IFILE, --inputfile=IFILE
@@ -29,6 +30,8 @@ Options:
                         Enter the name of file where you want to store corpus
   -k NTOP, --numtopics=NTOP
                         Number of topics
+  -v VERBOSE            Verbose Output True/False
+
 
 
 All the code in this project is under Creative Commons License. 
