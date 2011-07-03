@@ -5,12 +5,7 @@ gensim_lda_pubmed.py
 Created by Shreyas Karnik on 2011-07-02.
 Copyright (c) 2011 Shreyas Karnik.
 """
-
-
-
-
 import logging
-logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 from gensim import corpora, models, similarities
 from nltk.corpus import stopwords
 from optparse import OptionParser
@@ -21,14 +16,14 @@ from gensim.parsing import stem_text
 """
 Some options using the option parser 
 """
-usage = "usage: python %prog -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract]"
+usage = "usage: python %prog -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract] -v [verbose output FALSE by default]"
 parser = OptionParser(usage=usage)
 parser.add_option("-i", "--inputfile",action="store", dest="inputfile",help="Enter the file containing PubMed abstracts", metavar="IFILE")
 parser.add_option("-m", "--model",action="store",dest="model",help="Enter the name of file where you want to store output model", metavar="MFILE")
 parser.add_option("-d", "--dictionary",action="store",dest="dicto",help="Enter the name of file where you want to store dictionary", metavar="DFILE")
 parser.add_option("-c", "--corpusname",action="store",dest="corpname",help="Enter the name of file where you want to store corpus", metavar="CFILE")
 parser.add_option("-k", "--numtopics",action="store",dest="ntopics",type="int",help="Number of topics", metavar="NTOP")
-#parser.add_option("-v", action="store_true",help="Steming", dest="stem")
+parser.add_option("-v",action="store",help="Verbose Output True/False", dest="verbose",default="FALSE")
 #parser.add_option("-q", action="store_false",help="No stemming", dest="stem")
 (options, args) = parser.parse_args()
 if (len(options.inputfile)<0):
@@ -43,15 +38,31 @@ if (len(options.corpname)<0):
         parser.print_help()
 
 def main():
-  """
-  Creating dictionary while removing stopwords and words that occur only once.
-  """
+ 
   model=options.model
   inputfile=options.inputfile
   dicto=options.dicto
   ntopics=options.ntopics
   corpname=options.corpname
   stoplist = stopwords.words('english')
+  if(options.verbose=="TRUE"):
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+  else:
+    logger = logging.getLogger()
+    formatter =logging.Formatter('%(asctime)s : %(levelname)s : %(message)s')
+    log_file_name=inputfile+"_lda.log"
+    hdlr = logging.FileHandler(log_file_name)
+    hdlr.setFormatter(formatter)
+    logger.addHandler(hdlr) 
+    logger.setLevel(logging.INFO)
+  
+  """
+  Starting the number crunching
+  """
+  """
+  Creating dictionary while removing stopwords and words that occur only once.
+  """
+  
   texts = [[word.translate(None,string.punctuation) for word in document.lower().split() if word not in stoplist] for document in open(inputfile)]
   #texts = [[word.translate(None,string.punctuation) for word in document.lower().split() if word not in stoplist] for document in open(inputfile)]
   print ("Reading and tokenizing %s") % (inputfile)
@@ -82,10 +93,12 @@ def main():
   lda =models.LdaModel(corpus=corpus_tfidf, id2word=dictionary, num_topics=ntopics, update_every=5, passes=50)
   lda.print_topics(topics=ntopics,topn=10)
   lda.save(model)
-  doc_lda = lda[corpus_tfidf]
-  print(doc_lda)
-  for doc in doc_lda:
-    print(doc)
+  if(options.verbose=="FALSE"):
+    print "Processing finished please check %s for details" %(log_file_name) 
+  #doc_lda = lda[corpus_tfidf]
+  #print(doc_lda)
+  #for doc in doc_lda:
+  #  print(doc)
   
 if __name__ == "__main__":
   main()
