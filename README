@@ -14,27 +14,17 @@ Options:
   -s, --stem            To stem result
 2. Once you have the PubMed abstracts in a file run LDA over them:
 
-Usage: python gensim_lda_pubmed.py -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights]
+Usage: python gensim_lda_pubmed.py -i [inputfile] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights]
 
 Options:
   -h, --help            show this help message and exit
   -i IFILE, --inputfile=IFILE
                         Enter the file containing PubMed abstracts
-  -m MFILE, --model=MFILE
-                        Enter the name of file where you want to store output
-                        model
-  -d DFILE, --dictionary=DFILE
-                        Enter the name of file where you want to store
-                        dictionary
-  -c CFILE, --corpusname=CFILE
-                        Enter the name of file where you want to store corpus
   -k NTOP, --numtopics=NTOP
                         Number of topics
   -t TFIDF, --tfidf=TFIDF
                         TFIDF weignting (default TRUE)
   -v VERBOSE            Verbose Output True/False
-
-
 
 All the code in this project is under Creative Commons License. 
 
