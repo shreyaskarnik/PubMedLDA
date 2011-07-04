@@ -16,12 +16,12 @@ from gensim.parsing import stem_text
 """
 Some options using the option parser 
 """
-usage = "usage: python %prog -i [inputfile] -m [ldamodel] -d [dictionary] -c [corpus output name] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights]"
+usage = "usage: python %prog -i [inputfile] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights]"
 parser = OptionParser(usage=usage)
 parser.add_option("-i", "--inputfile",action="store", dest="inputfile",help="Enter the file containing PubMed abstracts", metavar="IFILE")
-parser.add_option("-m", "--model",action="store",dest="model",help="Enter the name of file where you want to store output model", metavar="MFILE")
-parser.add_option("-d", "--dictionary",action="store",dest="dicto",help="Enter the name of file where you want to store dictionary", metavar="DFILE")
-parser.add_option("-c", "--corpusname",action="store",dest="corpname",help="Enter the name of file where you want to store corpus", metavar="CFILE")
+#parser.add_option("-m", "--model",action="store",dest="model",help="Enter the name of file where you want to store output model", metavar="MFILE")
+#parser.add_option("-d", "--dictionary",action="store",dest="dicto",help="Enter the name of file where you want to store dictionary", metavar="DFILE")
+#parser.add_option("-c", "--corpusname",action="store",dest="corpname",help="Enter the name of file where you want to store corpus", metavar="CFILE")
 parser.add_option("-k", "--numtopics",action="store",dest="ntopics",type="int",help="Number of topics", metavar="NTOP")
 parser.add_option("-t", "--tfidf",action="store",dest="tfidf",help="TFIDF weignting (default TRUE)", metavar="TFIDF",default="TRUE")
 parser.add_option("-v",action="store",help="Verbose Output True/False", dest="verbose",default="FALSE")
@@ -29,22 +29,22 @@ parser.add_option("-v",action="store",help="Verbose Output True/False", dest="ve
 (options, args) = parser.parse_args()
 if (len(options.inputfile)<0):
 	parser.print_help()
-if (len(options.model)<0):
-        parser.print_help()
-if (len(options.dicto)<0):
-        parser.print_help()
+#if (len(options.model)<0):
+#        parser.print_help()
+#if (len(options.dicto)<0):
+#        parser.print_help()
 if (options.ntopics<=0):
         parser.print_help()
-if (len(options.corpname)<0):
-        parser.print_help()
+#if (len(options.corpname)<0):
+#        parser.print_help()
 
 def main():
  
-  model=options.model
+  model=options.inputfile+"_lda.model"
   inputfile=options.inputfile
-  dicto=options.dicto
+  dicto=options.inputfile+"_lda.dict"
   ntopics=options.ntopics
-  corpname=options.corpname
+  corpname=options.inputfile+"_lda.corpus"
   stoplist = stopwords.words('english')
   if(options.verbose=="TRUE"):
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
@@ -93,8 +93,9 @@ def main():
   """
   Running LDA
   """
-  lda =models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=ntopics,passes=50)
-  lda.print_topics(topics=ntopics,topn=12)
+  lda =models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=ntopics,passes=25,update_every=0,chunksize=100)
+  print("LDA finished printing %d topics with 12 top words") %(ntopics)
+  lda.print_topics(topics=ntopics,topn=30)
   lda.save(model)
   if(options.verbose=="FALSE"):
     print "Processing finished please check %s for details" %(log_file_name) 
