@@ -107,7 +107,7 @@ def main():
     f=open(out_fit_file,"a")
     doc_lda = lda[corpus]
     for doc in doc_lda:
-      f.write(str(doc))  
+      f.write(str(doc)+"\n")  
   if(options.verbose=="FALSE"):
     print "Processing finished please check %s for details" %(log_file_name) 
 if __name__ == "__main__":
