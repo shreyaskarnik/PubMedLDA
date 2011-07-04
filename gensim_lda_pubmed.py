@@ -16,7 +16,7 @@ from gensim.parsing import stem_text
 """
 Some options using the option parser 
 """
-usage = "usage: python %prog -i [inputfile] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights]"
+usage = "usage: python %prog -i [inputfile] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights] -r [return topics per document TRUE/FALSE (default FALSE)]"
 parser = OptionParser(usage=usage)
 parser.add_option("-i", "--inputfile",action="store", dest="inputfile",help="Enter the file containing PubMed abstracts", metavar="IFILE")
 #parser.add_option("-m", "--model",action="store",dest="model",help="Enter the name of file where you want to store output model", metavar="MFILE")
@@ -24,7 +24,8 @@ parser.add_option("-i", "--inputfile",action="store", dest="inputfile",help="Ent
 #parser.add_option("-c", "--corpusname",action="store",dest="corpname",help="Enter the name of file where you want to store corpus", metavar="CFILE")
 parser.add_option("-k", "--numtopics",action="store",dest="ntopics",type="int",help="Number of topics", metavar="NTOP")
 parser.add_option("-t", "--tfidf",action="store",dest="tfidf",help="TFIDF weignting (default TRUE)", metavar="TFIDF",default="TRUE")
-parser.add_option("-v",action="store",help="Verbose Output True/False", dest="verbose",default="FALSE")
+parser.add_option("-v",action="store",help="Verbose Output TRUE/FALSE (default FALSE)", dest="verbose",default="FALSE")
+parser.add_option("-r",action="store",help="Return topics per document TRUE/FALSE (default FALSE)", dest="fit",default="FALSE")
 #parser.add_option("-q", action="store_false",help="No stemming", dest="stem")
 (options, args) = parser.parse_args()
 if (len(options.inputfile)<0):
@@ -93,16 +94,21 @@ def main():
   """
   Running LDA
   """
-  lda =models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=ntopics,passes=25,update_every=0,chunksize=100)
+  lda =models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=ntopics,passes=25,update_every=0,chunksize=1000)
+  """
+  Printing LDA output
+  """
   print("LDA finished printing %d topics with 12 top words") %(ntopics)
-  lda.print_topics(topics=ntopics,topn=30)
+  lda.print_topics(topics=ntopics,topn=12)
   lda.save(model)
+  if(options.fit=="TRUE"):
+    out_fit_file=options.inputfile+"_lda.tc"
+    print "Topic allocation written in %s" % (out_fit_file)
+    f=open(out_fit_file,"a")
+    doc_lda = lda[corpus]
+    for doc in doc_lda:
+      f.write(str(doc))  
   if(options.verbose=="FALSE"):
     print "Processing finished please check %s for details" %(log_file_name) 
-  doc_lda = lda[corpus]
-  #print(doc_lda)
-  #for doc in doc_lda:
-   # print(doc)
-  
 if __name__ == "__main__":
   main()

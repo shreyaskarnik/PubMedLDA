@@ -14,7 +14,7 @@ Options:
   -s, --stem            To stem result
 2. Once you have the PubMed abstracts in a file run LDA over them:
 
-Usage: python gensim_lda_pubmed.py -i [inputfile] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights]
+Usage: python gensim_lda_pubmed.py -i [inputfile] -k [number of topics to extract] -v [verbose output FALSE by default] -t [TRUE/ FALSE for TFIDF weights] -r [return topics per document TRUE/FALSE (default FALSE)]
 
 Options:
   -h, --help            show this help message and exit
@@ -24,7 +24,8 @@ Options:
                         Number of topics
   -t TFIDF, --tfidf=TFIDF
                         TFIDF weignting (default TRUE)
-  -v VERBOSE            Verbose Output True/False
+  -v VERBOSE            Verbose Output TRUE/FALSE (default FALSE)
+  -r FIT                Return topics per document TRUE/FALSE (default FALSE)
 
 All the code in this project is under Creative Commons License. 
 
