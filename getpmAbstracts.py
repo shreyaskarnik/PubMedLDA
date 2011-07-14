@@ -57,7 +57,7 @@ def main():
 	f = open(ofile, 'a')
 	ids = [x.text for x in root.findall("IdList/Id")]
 	print 'Got %d articles' % (len(ids))
-	count=1
+	count=0
 	for group in chunker(ids, 100):
 		efetch = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?&db=pubmed&retmode=xml&id=%s" % (','.join(group))
     		handle = urllib.urlopen(efetch)
@@ -73,17 +73,18 @@ def main():
 				count=count+1
 				for abst_part in abstract:
 					abstract_text+=' '+str(abst_part.text)
+				title.encode('utf-8', 'replace')
+				abstract_text.encode('utf-8', 'replace')     		
+				final=str(title)+" "+str(abstract_text)
+				final.encode('utf-8', 'replace')
+			        if(options.stem==True):
+					final=final.translate(None,string.punctuation)
+					f.write(stem_text(final.lower())+"\n")
+				else:
+				  final=final.translate(None,string.punctuation)
+				  f.write(final+"\n")
 			else:
-			  print 'skipping PMID %s as length of abstract is zero' % pmid
-			title.encode('utf-8', 'replace')
-			abstract_text.encode('utf-8', 'replace')     		
-			final=str(title)+" "+str(abstract_text)
-			final.encode('utf-8', 'replace')
-			if(options.stem==True):
-			  final=final.translate(None,string.punctuation)
-			  f.write(stem_text(final.lower())+"\n")
-			else:
-			  f.write(final+"\n")
+			   print 'skipping PMID %s as length of abstract is zero' % pmid
 	print 'written to %s articles to file %s' % (count,ofile)
 if __name__ == "__main__":
     main()
