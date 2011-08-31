@@ -65,7 +65,7 @@ def main():
   Creating dictionary while removing stopwords and words that occur only once.
   """
   
-  texts = [[word.translate(None,string.punctuation) for word in document.lower().split() if word not in stoplist] for document in open(inputfile)]
+  texts = [[word for word in document.lower().split() if word not in stoplist] for document in open(inputfile)]
   #texts = [[word.translate(None,string.punctuation) for word in document.lower().split() if word not in stoplist] for document in open(inputfile)]
   print ("Reading and tokenizing %s") % (inputfile)
   dictionary = corpora.Dictionary(line.lower().split() for line in open(inputfile))
@@ -94,13 +94,13 @@ def main():
   """
   Running LDA
   """
-  lda =models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=ntopics,passes=25,update_every=0,chunksize=1000)
+  lda =models.LdaModel(corpus=corpus, id2word=dictionary, num_topics=ntopics,passes=40,update_every=1,chunksize=800)
   """
   Printing LDA output
   """
   print("LDA finished printing %d topics with 12 top words") %(ntopics)
   lda.print_topics(topics=ntopics,topn=12)
-  lda.save(model)
+  lda.save(model)                                                                                    
   if(options.fit=="TRUE"):
     out_fit_file=options.inputfile+"_lda.tc"
     print "Topic allocation written in %s" % (out_fit_file)
