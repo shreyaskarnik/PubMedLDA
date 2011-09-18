@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 getpmAbstracts.py
-
-By Shreyas Karnik on 2011-07-02.
-Copyright (c) 2011 Shreyas Karnik.
+_author_ = Shreyas Karnik
 """
 
 
