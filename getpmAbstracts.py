@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 getpmAbstracts.py
-_author_ = Shreyas Karnik
+Author: Shreyas Karnik
 """
 
 
