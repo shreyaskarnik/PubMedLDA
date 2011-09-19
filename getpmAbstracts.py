@@ -4,11 +4,6 @@
 getpmAbstracts.py
 Author: Shreyas Karnik
 """
-
-
-
-
-
 import urllib
 import urllib2
 import sys
