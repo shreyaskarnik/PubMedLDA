@@ -3,7 +3,6 @@
 gensim_lda_pubmed.py
 
 Created by Shreyas Karnik on 2011-07-02.
-Copyright (c) 2011 Shreyas Karnik.
 """
 import logging
 from gensim import corpora, models, similarities
